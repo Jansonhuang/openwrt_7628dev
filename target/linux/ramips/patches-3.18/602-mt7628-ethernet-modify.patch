@@ -1,0 +1,16 @@
+--- a/drivers/net/ethernet/ralink/ralink_soc_eth.c
++++ b/drivers/net/ethernet/ralink/ralink_soc_eth.c
+@@ -120,11 +120,11 @@ void fe_reset(u32 reset_bits)
+ 	t = rt_sysc_r32(SYSC_REG_RSTCTRL);
+ 	t |= reset_bits;
+ 	rt_sysc_w32(t , SYSC_REG_RSTCTRL);
+-	udelay(10);
++	udelay(100);
+ 
+ 	t &= ~reset_bits;
+ 	rt_sysc_w32(t, SYSC_REG_RSTCTRL);
+-	udelay(10);
++	udelay(100);
+ }
+ 
+ static inline void fe_int_disable(u32 mask)

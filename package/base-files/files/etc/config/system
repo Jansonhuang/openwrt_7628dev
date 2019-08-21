@@ -1,0 +1,65 @@
+config system
+	option hostname	ZhuoTK
+	option timezone	UTC
+
+config timeserver ntp
+	list server	0.openwrt.pool.ntp.org
+	list server	1.openwrt.pool.ntp.org
+	list server	2.openwrt.pool.ntp.org
+	list server	3.openwrt.pool.ntp.org
+	option enabled 1
+	option enable_server 0
+
+config led
+	option default '0'
+	option name 'system'
+	option sysfs 'mediatek:green:system'
+	option trigger 'timer'
+	option delayon '1000'
+	option delayoff '1000'
+
+config led
+	option default '0'
+	option name 'wifi'
+	option sysfs 'mediatek:green:wifi'
+	option trigger 'netdev'
+	option dev 'ra0'
+	option mode 'link tx rx'
+
+config led
+	option default '0'
+	option name 'wan'
+	option sysfs 'mediatek:green:wan'
+	option trigger 'netdev'
+	option dev 'eth0.2'
+	option mode 'link tx rx'
+
+config led
+	option default '0'
+	option sysfs 'mediatek:green:lan_1'
+	option trigger 'netdev'
+	option dev 'eth0.1'
+	option mode 'link tx rx'
+	option name 'lan_1'
+
+config led
+	option default '0'
+	option name 'lan_2'
+	option sysfs 'mediatek:green:lan_2'
+	option trigger 'netdev'
+	option dev 'eth0.1'
+	option mode 'link tx rx'
+
+config button             
+        option button   BTN_3
+        option action   released
+        option handler  reboot
+	option min	0
+	option max	3
+
+config button
+	option button	BTN_3
+	option action	released
+	option handler	'jffs2reset -y && reboot'
+	option min	5
+	option max	30

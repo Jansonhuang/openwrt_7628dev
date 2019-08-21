@@ -1,0 +1,40 @@
+--- a/sound/soc/mtk/i2s_ctrl.c
++++ b/sound/soc/mtk/i2s_ctrl.c
+@@ -1281,7 +1281,6 @@ int i2s_refclk_18p432m_enable(unsigned l
+ int i2s_refclk_disable(void)
+ {
+ 	unsigned long data;
+-
+ #if defined(CONFIG_RALINK_RT6855A)
+     	data = i2s_inw(RALINK_SYSCTL_BASE+0x860);
+ 	data &= ~(1<<17);
+@@ -1352,7 +1351,8 @@ int i2s_refclk_gpio_out_config(void)
+ #if defined(CONFIG_RALINK_MT7628)
+ 	data = i2s_inw(RALINK_SYSCTL_BASE+0x60);
+ //	data &= ~(0x1<<18);
+-	data |= 0x02;//set bit 0~1,GPIO_MODE->REFCLK 
++	data &= ~(0x03<<0);//set bit 0~1,GPIO_MODE->REFCLK 
++	data |= 0x02<<0;//set bit 0~1,GPIO_MODE->REFCLK 
+ 	i2s_outw(RALINK_SYSCTL_BASE+0x60, data);
+ #endif
+ 
+@@ -1398,7 +1398,7 @@ int i2s_refclk_gpio_in_config(void)
+ 	/* To use external OSC, set REFCLK_GPIO ping as GPIO mode and set it as input direction */
+ 	data = i2s_inw(RALINK_SYSCTL_BASE+0x60);
+ //	data |= (0x1<<18);
+-	data &= 0xfc;//clean bit 0~1,GPIO_MODE->gpio
++	data &= ~(0x03<<0);//clean bit 0~1,GPIO_MODE->gpio
+ 	i2s_outw(RALINK_SYSCTL_BASE+0x60, data);
+ 
+ //	data = i2s_inw(RALINK_PIO_BASE+0x04);
+@@ -1825,8 +1825,8 @@ int i2s_clock_disable(i2s_config_type* p
+ 
+ 	/* disable internal MCLK */
+ #if defined(CONFIG_I2S_IN_MCLK)	
+-	//i2s_refclk_disable();
+-	//i2s_refclk_gpio_in_config();
++	i2s_refclk_disable();
++	i2s_refclk_gpio_in_config();
+ #endif
+ 	return 0;
+ }	
